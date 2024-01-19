@@ -8,7 +8,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { baseurl } from "../../utils/BaseUrl";
 import { useFile } from "../../FIleContext";
-
+import Allpdf from "../Model/Allpdf";
 import Model from "../Model/Model";
 import Footer from "../../components/Footer/Footer";
 import SubHead from "../../components/Header/SubHead";
@@ -134,13 +134,20 @@ const Document = () => {
     }
   }
   const [show, setShow] = useState(false);
+  const [show1, setShow1] = useState(false);
   const handleBoxClick1 = () => {
     // Navigate to the "/compare" route when the box is clicked
     // navigate("/ask");
     setShow(true);
   };
+  const handleBoxClick3 = () => {
+    // Navigate to the "/compare" route when the box is clicked
+    // navigate("/ask");
+    setShow1(true);
+  };
   const hideModal = () => {
     setShow(false);
+   
   };
   const customStyles = {
     display: "flex",
@@ -168,8 +175,28 @@ const Document = () => {
   return (
     <div>
       <SubHead />
-
       {show && (
+        <div
+        style={{
+            position: "fixed",
+            // display: "flex",
+            // justifyContent: "center",
+            // alignItems: "center",
+            background: "rgba(0, 0, 0, 0.46)",
+            backdropFilter: "blur(5px)",
+            zIndex: 9999,
+            inset: 0,
+            top: "0%",
+            left: "0%",
+            margin: "auto",
+            width: "100%",
+          }}
+          >
+          <Model hide={hideModal} />
+
+        </div>
+      )}
+      {show1 && (
         <div
           style={{
             position: "fixed",
@@ -186,7 +213,8 @@ const Document = () => {
             width: "100%",
           }}
         >
-          <Model hide={hideModal} />
+          <Allpdf hide={hideModal}  />
+
         </div>
       )}
 
@@ -213,16 +241,30 @@ const Document = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <button
+                  onClick={handleBoxClick3}
+                  style={customStyles}
+                // style={{
+                //   borderRadius: "12px",
+                //   background: "var(--Button-color, #3843D0)",
+                //   padding: "12px",
+                //   color: "#fff",
+                //   marginRight: "12px",
+                //   marginLeft: "10px",
+                // }}
+                >
+                  All Pdfs
+                </button>
+                <button
                   onClick={handleBoxClick1}
                   style={customStyles}
-                  // style={{
-                  //   borderRadius: "12px",
-                  //   background: "var(--Button-color, #3843D0)",
-                  //   padding: "12px",
-                  //   color: "#fff",
-                  //   marginRight: "12px",
-                  //   marginLeft: "10px",
-                  // }}
+                // style={{
+                //   borderRadius: "12px",
+                //   background: "var(--Button-color, #3843D0)",
+                //   padding: "12px",
+                //   color: "#fff",
+                //   marginRight: "12px",
+                //   marginLeft: "10px",
+                // }}
                 >
                   Upload
                 </button>

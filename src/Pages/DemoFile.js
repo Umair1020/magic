@@ -326,7 +326,7 @@ function DemoFile({ pdfDoc, userId, path, pdfId, pdfPath }) {
               onKeyPress={handleKeyPress}
             />
             <button onClick={handleSendMessage}>
-              <img src="/send.svg" />
+              <img src="/send.png" />
             </button>
           </div>
         </div>
@@ -411,7 +411,7 @@ function DemoFile({ pdfDoc, userId, path, pdfId, pdfPath }) {
               onKeyPress={handleKeyPress}
             />
             <button onClick={handleSendMessage}>
-              <img src="/send.svg" />
+              <img src="/send.png" />
             </button>
           </div>
         </div>

@@ -1,87 +1,131 @@
-import React, { useState } from "react";
-import "./model.css";
-import axios from "axios";
+import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import { useFile } from "../../FIleContext";
-import { baseurl } from "../../utils/BaseUrl";
-const Model = ({ hide, namePdf }) => {
-  const navigate = useNavigate();
-  const { setFile, file } = useFile();
-  const [name, setName] = useState("");
-  const [isOcrChecked, setIsOcrChecked] = useState(false);
-  const [activeButton, setActiveButton] = useState("document");
-  const [showFileUpload, setShowFileUpload] = useState(true);
-  const formdata = new FormData();
-  formdata.append("pdfDoc", file);
-  const handleUrl = () => {
-    // const res = await axios.post(`${baseurl}/api/pdf/createOnlyPdf`, formdata);
-    if (isOcrChecked) {
-      // Ensure the file is selected for OCR
-      if (!file) {
-        toast.error("Please select a file for OCR.", {
-          position: "top-right",
-          autoClose: 3000, // milliseconds
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-        return;
-      }
 
-      // Redirect to OCR page
-      navigate("/ocrpdf");
-    } else {
-      const fileSection = document.querySelector(".file-upload-section");
+const MAX_COUNT = 5;
 
-      if (fileSection.style.display !== "none" && !file) {
-        // File upload section is active, but no file is selected
-        toast.error("Please select a file.", {
-          position: "top-right",
-          autoClose: 3000, // milliseconds
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-      } else {
-        // Navigate only if a file is selected
-        navigate("/ask");
+const Allpdf = ({hide}) => {
+    const { setFile, file } = useFile();
+    const [name, setName] = useState("");
+    const [isOcrChecked, setIsOcrChecked] = useState(false);
+    const [activeButton, setActiveButton] = useState("document");
+    const [showFileUpload, setShowFileUpload] = useState(true);
+    const formdata = new FormData();
+    formdata.append("pdfDoc", file);
+    const [uploadedFiles, setUploadedFiles] = useState([])
+    const [fileLimit, setFileLimit] = useState(false);
+    const navigate = useNavigate();
+    const handleFileChange = async (event) => {
+      const file = event.target.files[0];
+      setFile(file);
+      setName(file);
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          localStorage.setItem("fileData", e.target.result);
+          localStorage.setItem("fileName", file.name);
+          localStorage.setItem("fileType", file.type);
+        };
+        reader.readAsDataURL(file);
       }
-    }
-  };
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-    setFile(file);
-    setName(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        localStorage.setItem("fileData", e.target.result);
-        localStorage.setItem("fileName", file.name);
-        localStorage.setItem("fileType", file.type);
+    };
+    // const handleFileChange = async (event) => {
+    //   const uploaded = [...uploadedFiles];
+    //   let limitExceeded = false;
+    //   files.some((file) => {
+    //       if (uploaded.findIndex((f) => f.name === file.name) === -1) {
+    //           uploaded.push(file);
+    //           if (uploaded.length === MAX_COUNT) setFileLimit(true);
+    //           if (uploaded.length > MAX_COUNT) {
+    //               alert(`You can only add a maximum of ${MAX_COUNT} files`);
+    //               setFileLimit(false);
+    //               limitExceeded = true;
+    //               return true;
+    //           }
+    //       }
+    //   })
+    //   if (!limitExceeded) setUploadedFiles(uploaded)
+    //     const file = event.target.files[0];
+    //     setFile(file);
+    //     setName(file);
+    //     if (file) {
+    //       const reader = new FileReader();
+    //       reader.onload = function (e) {
+    //         localStorage.setItem("fileData", e.target.result);
+    //         localStorage.setItem("fileName", file.name);
+    //         localStorage.setItem("fileType", file.type);
+    //       };
+    //       reader.readAsDataURL(file);
+    //     }
+    //   };
+    
+    const handleUrl = () => {
+        // const res = await axios.post(`${baseurl}/api/pdf/createOnlyPdf`, formdata);
+        if (isOcrChecked) {
+          // Ensure the file is selected for OCR
+          if (!file) {
+            toast.error("Please select a file for OCR.", {
+              position: "top-right",
+              autoClose: 3000, // milliseconds
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
+            return;
+          }
+    
+          // Redirect to OCR page
+          navigate("/allpdf");
+        } else {
+          const fileSection = document.querySelector(".file-upload-section");
+    
+          if (fileSection.style.display !== "none" && !file) {
+            // File upload section is active, but no file is selected
+            toast.error("Please select a file.", {
+              position: "top-right",
+              autoClose: 3000, // milliseconds
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
+          } else {
+            // Navigate only if a file is selected
+            navigate("/allpdf");
+          }
+        }
       };
-      reader.readAsDataURL(file);
+
+    // const handleUploadFiles = files => {
+    //     const uploaded = [...uploadedFiles];
+    //     let limitExceeded = false;
+    //     files.some((file) => {
+    //         if (uploaded.findIndex((f) => f.name === file.name) === -1) {
+    //             uploaded.push(file);
+    //             if (uploaded.length === MAX_COUNT) setFileLimit(true);
+    //             if (uploaded.length > MAX_COUNT) {
+    //                 alert(`You can only add a maximum of ${MAX_COUNT} files`);
+    //                 setFileLimit(false);
+    //                 limitExceeded = true;
+    //                 return true;
+    //             }
+    //         }
+    //     })
+    //     if (!limitExceeded) setUploadedFiles(uploaded)
+
+    // }
+
+    const handleFileEvent = (e) => {
+        const chosenFiles = Array.prototype.slice.call(e.target.files)
+        handleFileChange(chosenFiles);
     }
-  };
 
-  const toggleSections = (uploadType) => {
-    if (uploadType === "document") {
-      setShowFileUpload(true);
-      setActiveButton("document");
-    } else if (uploadType === "url") {
-      setShowFileUpload(false);
-      setActiveButton("url");
-    }
-  };
-
-  return (
-    <div className="sc-f44562c1-0 boSApP">
-      <ToastContainer />
-
-      <div
+    return (
+        <div>
+  <div
         className="sc-f44562c1-1 cseGOX my-3"
         style={{ maxWidth: "700px", margin: "auto" }}
         data-show=""
@@ -179,8 +223,12 @@ const Model = ({ hide, namePdf }) => {
                   type="file"
                   id="input-file-upload"
                   required
-                  accept="application/pdf"
+                //   accept="application/pdf"
+                //   onChange={handleFileChange}
+                  multiple
+                  accept='application/pdf, image/png'
                   onChange={handleFileChange}
+                  disabled={fileLimit}
                 />
                 <label
                   style={{ cursor: "pointer" }}
@@ -223,6 +271,10 @@ const Model = ({ hide, namePdf }) => {
                       type="url"
                       placeholder="https://cdn.openai.com/papers/gpt-4.pdf"
                       value=""
+                      multiple
+                      accept='application/pdf, image/png'
+                      onChange={handleFileEvent}
+                      disabled={fileLimit}
                     />
                   </div>
                 </div>
@@ -295,8 +347,11 @@ Makes the text of a scanned document searchable."
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+   
 
-export default Model;
+          
+        </div>
+    )
+}
+
+export default Allpdf

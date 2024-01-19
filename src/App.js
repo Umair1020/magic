@@ -18,6 +18,7 @@ import ErrorFallback from "./ErrorHandling";
 import Support from "./Pages/Support/Support";
 import Privacy from "./Pages/Privacy/Privacy";
 import Blog from "./Pages/Blog/Blog";
+import MultiplePdfs from "./components/Pdf/MultiplePdfs";
 const userCookie = Cookies.get("user");
 function App() {
   const [hasError, setHasError] = useState(false);
@@ -78,6 +79,7 @@ function App() {
           <Route path="/resumescanner" element={<Pdfscanner />} />
           <Route path="/invoicescanner" element={<Pdfscanner />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/allpdf" element={<MultiplePdfs />} />
         </Routes>
       )}
     </>
