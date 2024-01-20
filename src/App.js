@@ -18,7 +18,7 @@ import ErrorFallback from "./ErrorHandling";
 import Support from "./Pages/Support/Support";
 import Privacy from "./Pages/Privacy/Privacy";
 import Blog from "./Pages/Blog/Blog";
-import MultiplePdfs from "./components/Pdf/MultiplePdfs";
+import MultiplePdfs from "./MultiplePdfs/MultiplePdfs";
 const userCookie = Cookies.get("user");
 function App() {
   const [hasError, setHasError] = useState(false);
